@@ -9,13 +9,10 @@ import io.restassured.builder.RequestSpecBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-//import steps.AuthorizationApi;
 
 import static helpers.CustomAllureListener.withCustomTemplates;
 
 public class TestBase {
-
-    //public static AuthorizationApi authorizationApi = new AuthorizationApi();
 
     @BeforeAll
     static void setupConfig() {
