@@ -32,7 +32,7 @@ dependencies {
             'com.github.javafaker:javafaker:1.0.2',
             'com.fasterxml.jackson.core:jackson-databind:2.18.2',
             'com.codeborne:selenide:7.11.1',
-            'io.rest-assured:json-schema-validator:5.5.6', //для конвертации находу из 1 формата в другой
+            'io.rest-assured:json-schema-validator:5.5.6'
     )
 }
 
