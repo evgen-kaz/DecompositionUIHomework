@@ -6,7 +6,6 @@ import extensions.LoginExtensions;
 import extensions.WithLogin;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
-import io.restassured.specification.RequestSpecification;
 import models.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -17,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static api.EndPoint.*;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,7 +39,7 @@ public class DemoqaTests extends TestBase {
                 given(requestSpec)
                         .body(passwordAndUserName)
                         .when()
-                        .post("/Account/v1/Login")
+                        .post(LOGIN_END_POINT)
                         .then()
                         .spec(responseSpec(200))
                         .extract().as(AuthorizationResponseModel.class));
@@ -51,7 +51,7 @@ public class DemoqaTests extends TestBase {
         step("Удаление через API всех книг", () ->
                 given(getAuthRequestSpec(responseAuthUser.getToken()))
                         .when()
-                        .delete("/BookStore/v1/Books?UserId=" + responseAuthUser.getUserId())
+                        .delete(BOOKS_WITH_USER_ID + responseAuthUser.getUserId())
                         .then()
                         .spec(responseSpec(204)));
 
@@ -68,7 +68,7 @@ public class DemoqaTests extends TestBase {
                 given(getAuthRequestSpec(responseAuthUser.getToken()))
                         .body(jsonBody)
                         .when()
-                        .post("BookStore/v1/Books")
+                        .post(BOOKS_END_POINT)
                         .then()
                         .spec(responseSpec(201))
                         .extract().as(AddBookResponseModel.class));
@@ -92,7 +92,7 @@ public class DemoqaTests extends TestBase {
                 given(requestSpec)
                         .body(passwordAndUserName)
                         .when()
-                        .post("/Account/v1/Login")
+                        .post(LOGIN_END_POINT)
                         .then()
                         .spec(responseSpec(200))
                         .extract().as(AuthorizationResponseModel.class));
@@ -100,12 +100,11 @@ public class DemoqaTests extends TestBase {
             assertNotNull(responseAuthUser.getToken());
         });
 
-
         RestAssured.defaultParser = Parser.JSON;
         step("Удаление книг через API", () ->
                 given(getAuthRequestSpec(responseAuthUser.getToken()))
                         .when()
-                        .delete("/BookStore/v1/Books?UserId=" + responseAuthUser.getUserId())
+                        .delete(BOOKS_WITH_USER_ID + responseAuthUser.getUserId())
                         .then()
                         .spec(responseSpec(204)));
 
@@ -125,7 +124,7 @@ public class DemoqaTests extends TestBase {
                 given(getAuthRequestSpec(responseAuthUser.getToken()))
                         .body(jsonBody)
                         .when()
-                        .post("BookStore/v1/Books")
+                        .post(BOOKS_END_POINT)
                         .then()
                         .spec(responseSpec(201))
                         .extract().as(AddBookResponseModel.class));
@@ -137,7 +136,7 @@ public class DemoqaTests extends TestBase {
                 given(getAuthRequestSpec(responseAuthUser.getToken()))
                         .body(jsonBody)
                         .when()
-                        .delete("BookStore/v1/Books?UserId=" + responseAuthUser.getUserId())
+                        .delete(BOOKS_WITH_USER_ID + responseAuthUser.getUserId())
                         .then()
                         .spec(responseSpec(204)));
 
@@ -149,7 +148,6 @@ public class DemoqaTests extends TestBase {
     @WithLogin
     @Tag("Positive")
     @DisplayName("Авторизация с помощью аннотации '@WithLogin' + удаление книги через API")
-
     void successfulAuthorizationAnnotationAndDeleteBookAPI() throws JsonProcessingException {
         String token = LoginExtensions.token;
         String userId = LoginExtensions.userID;
@@ -158,7 +156,7 @@ public class DemoqaTests extends TestBase {
         step("Удаление книг через API", () ->
                 given(getAuthRequestSpec(token))
                         .when()
-                        .delete("/BookStore/v1/Books?UserId=" + userId)
+                        .delete(BOOKS_WITH_USER_ID + userId)
                         .then()
                         .spec(responseSpec(204)));
 
@@ -177,7 +175,7 @@ public class DemoqaTests extends TestBase {
                 given(getAuthRequestSpec(token))
                         .body(jsonBody)
                         .when()
-                        .post("BookStore/v1/Books")
+                        .post(BOOKS_END_POINT)
                         .then()
                         .spec(responseSpec(201))
                         .extract().as(AddBookResponseModel.class));
@@ -189,7 +187,7 @@ public class DemoqaTests extends TestBase {
                 given(getAuthRequestSpec(token))
                         .body(jsonBody)
                         .when()
-                        .delete("BookStore/v1/Books?UserId=" + userId)
+                        .delete(BOOKS_WITH_USER_ID + userId)
                         .then()
                         .spec(responseSpec(204)));
     }
