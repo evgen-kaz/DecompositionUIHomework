@@ -55,14 +55,14 @@ public class DemoqaTests extends TestBase {
                         .then()
                         .spec(responseSpec(204)));
 
-        ObjectMapper mapper = new ObjectMapper(); 
-        AddIsbnRequestModel isbnModel = new AddIsbnRequestModel();
+        ObjectMapper mapper = new ObjectMapper(); // для преобразования Java-объекта в строку формата JSON
+        AddIsbnRequestModel isbnModel = new AddIsbnRequestModel(); //создали объект класса. задали Isbn книги
         isbnModel.setIsbn(ISBN);
 
-        AddBookRequestModel addBookModel = new AddBookRequestModel();
+        AddBookRequestModel addBookModel = new AddBookRequestModel(); //создали объект класса. задали UserId и положили в collectionOfIsbns - isbn книги конкретной
         addBookModel.setUserId("a11b9d00-d415-4099-84bc-485592546bf9");
         addBookModel.setCollectionOfIsbns(List.of(isbnModel));
-        String jsonBody = mapper.writeValueAsString(addBookModel);
+        String jsonBody = mapper.writeValueAsString(addBookModel); //преобразование объекта в JSON
 
         AddBookResponseModel responseAddBookModel = step("Добавление книги через API", () ->
                 given(getAuthRequestSpec(responseAuthUser.getToken()))
@@ -108,16 +108,17 @@ public class DemoqaTests extends TestBase {
                         .then()
                         .spec(responseSpec(204)));
 
-        ObjectMapper mapper = new ObjectMapper(); 
 
-        AddIsbnRequestModel isbnModel = new AddIsbnRequestModel();
+        ObjectMapper mapper = new ObjectMapper(); // для преобразования Java-объекта в строку формата JSON
+
+        AddIsbnRequestModel isbnModel = new AddIsbnRequestModel(); //создали объект класса. задали Isbn книги
         isbnModel.setIsbn(ISBN);
 
-        AddBookRequestModel addBookModel = new AddBookRequestModel();
+        AddBookRequestModel addBookModel = new AddBookRequestModel(); //создали объект класса. задали UserId и положили в collectionOfIsbns - isbn книги конкретной
         addBookModel.setUserId("a11b9d00-d415-4099-84bc-485592546bf9");
         addBookModel.setCollectionOfIsbns(List.of(isbnModel));
 
-        String jsonBody = mapper.writeValueAsString(addBookModel); 
+        String jsonBody = mapper.writeValueAsString(addBookModel); //преобразование объекта в JSON
 
         AddBookResponseModel responseAddBookModel = step("Добавление книги через API", () ->
                 given(getAuthRequestSpec(responseAuthUser.getToken()))
@@ -159,16 +160,16 @@ public class DemoqaTests extends TestBase {
                         .then()
                         .spec(responseSpec(204)));
 
-        ObjectMapper mapper = new ObjectMapper(); 
+        ObjectMapper mapper = new ObjectMapper(); // для преобразования Java-объекта в строку формата JSON
 
-        AddIsbnRequestModel isbnModel = new AddIsbnRequestModel();
+        AddIsbnRequestModel isbnModel = new AddIsbnRequestModel(); //создали объект класса. задали Isbn книги
         isbnModel.setIsbn(ISBN);
 
-        AddBookRequestModel addBookModel = new AddBookRequestModel(); 
+        AddBookRequestModel addBookModel = new AddBookRequestModel(); //создали объект класса. задали UserId и положили в collectionOfIsbns - isbn книги конкретной
         addBookModel.setUserId("a11b9d00-d415-4099-84bc-485592546bf9");
         addBookModel.setCollectionOfIsbns(List.of(isbnModel));
 
-        String jsonBody = mapper.writeValueAsString(addBookModel);
+        String jsonBody = mapper.writeValueAsString(addBookModel); //преобразование объекта в JSON
 
         AddBookResponseModel response = step("Добавление книги через API", () ->
                 given(getAuthRequestSpec(token))
