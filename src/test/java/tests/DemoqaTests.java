@@ -85,47 +85,17 @@ public class DemoqaTests extends TestBase {
     @WithLogin
     @Tag("Positive")
     @DisplayName("Авторизация с помощью аннотации '@WithLogin' + удаление книги через API")
-    void successfulAuthorizationAnnotationAndDeleteBookAPI() throws JsonProcessingException {
-        String token = LoginExtensions.token;
-        String userId = LoginExtensions.userID;
-
-        RestAssured.defaultParser = Parser.JSON;
-        step("Удаление книг через API", () ->
-                given(getAuthRequestSpec(token))
-                        .when()
-                        .delete(BOOKS_WITH_USER_ID + userId)
-                        .then()
-                        .spec(responseSpec(204)));
-
-        ObjectMapper mapper = new ObjectMapper(); // для преобразования Java-объекта в строку формата JSON
-
-        AddIsbnRequestModel isbnModel = new AddIsbnRequestModel();
-        isbnModel.setIsbn(ISBN);
-
-        AddBookRequestModel addBookModel = new AddBookRequestModel();
-        addBookModel.setUserId("a11b9d00-d415-4099-84bc-485592546bf9");
-        addBookModel.setCollectionOfIsbns(List.of(isbnModel));
-
-        String jsonBody = mapper.writeValueAsString(addBookModel);
-
-        AddBookResponseModel response = step("Добавление книги через API", () ->
-                given(getAuthRequestSpec(token))
-                        .body(jsonBody)
-                        .when()
-                        .post(BOOKS_END_POINT)
-                        .then()
-                        .spec(responseSpec(201))
-                        .extract().as(AddBookResponseModel.class));
-        step("Проверка ответа на добавление книги", () -> {
-            assertEquals(List.of(isbnModel), response.getBooks());
+    void successfulAuthorizationAnnotationAndDeleteBookAPI() {
+        step("Удаление всех книг через API", () -> {
+            bookStoreApiSteps.AutWithAnnotationAndDeleteBooks();
         });
 
-        step("Удаление книги с ISBN через API", () ->
-                given(getAuthRequestSpec(token))
-                        .body(jsonBody)
-                        .when()
-                        .delete(BOOKS_WITH_USER_ID + userId)
-                        .then()
-                        .spec(responseSpec(204)));
+        step("Добавление книги через API", () -> {
+            bookStoreApiSteps.AutWithAnnotationAndAddBook();
+        });
+
+        step("Удаление книги через API", () ->{
+            bookStoreApiSteps.AutWithAnnotationAndDeleteBook();
+        });
     }
 }
