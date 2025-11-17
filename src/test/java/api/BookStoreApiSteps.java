@@ -83,7 +83,7 @@ public class BookStoreApiSteps {
     }
 
     @DisplayName("Добавление книги через API с данными авторизации '@WithLogin'")
-    public void AutWithAnnotationAndAddBook() {
+    public void AutWithAnnotationAndAddBook() throws JsonProcessingException {
         String token = LoginExtensions.token;
         ObjectMapper mapper = new ObjectMapper();
         AddIsbnRequestModel isbnModel = new AddIsbnRequestModel();
@@ -92,7 +92,7 @@ public class BookStoreApiSteps {
         AddBookRequestModel addBookModel = new AddBookRequestModel();
         addBookModel.setUserId("a11b9d00-d415-4099-84bc-485592546bf9");
         addBookModel.setCollectionOfIsbns(List.of(isbnModel));
-        //jsonBody = mapper.writeValueAsString(addBookModel);
+        String jsonBody = mapper.writeValueAsString(addBookModel);
 
         AddBookResponseModel response =
                 given(getAuthRequestSpec(token))
@@ -118,9 +118,9 @@ public class BookStoreApiSteps {
         AddBookRequestModel addBookModel = new AddBookRequestModel();
         addBookModel.setUserId("a11b9d00-d415-4099-84bc-485592546bf9");
         addBookModel.setCollectionOfIsbns(List.of(isbnModel));
-        String jsonBody1 = mapper.writeValueAsString(addBookModel);
+        String jsonBody = mapper.writeValueAsString(addBookModel);
         given(getAuthRequestSpec(token))
-                .body(jsonBody1)
+                .body(jsonBody)
                 .when()
                 .delete(BOOKS_WITH_USER_ID + userId)
                 .then()
