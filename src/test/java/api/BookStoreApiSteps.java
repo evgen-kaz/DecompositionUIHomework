@@ -7,6 +7,8 @@ import io.restassured.parsing.Parser;
 import models.AddBookRequestModel;
 import models.AddBookResponseModel;
 import models.AddIsbnRequestModel;
+import org.junit.jupiter.api.DisplayName;
+import pages.ProfilePage;
 
 import java.util.List;
 
@@ -16,10 +18,14 @@ import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static specs.BaseSpecs.*;
+import static specs.BaseSpecs.getAuthRequestSpec;
 import static utils.DataTest.ISBN;
 
 public class BookStoreApiSteps {
+    ProfilePage profilePage = new ProfilePage();
+    public String jsonBody;
 
+    @DisplayName("Удаление всех книг")
     public void deleteBooks(String tokenGet, String userIDGet) {
         RestAssured.defaultParser = Parser.JSON;
                 given(getAuthRequestSpec(tokenGet))
@@ -29,6 +35,7 @@ public class BookStoreApiSteps {
                         .spec(responseSpec(204));
     }
 
+    @DisplayName("Добавление книги")
     public AddBookResponseModel addBook(String tokenGet) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         AddIsbnRequestModel isbnModel = new AddIsbnRequestModel();
@@ -37,7 +44,7 @@ public class BookStoreApiSteps {
         AddBookRequestModel addBookModel = new AddBookRequestModel();
         addBookModel.setUserId("a11b9d00-d415-4099-84bc-485592546bf9");
         addBookModel.setCollectionOfIsbns(List.of(isbnModel));
-        String jsonBody = mapper.writeValueAsString(addBookModel);
+        jsonBody = mapper.writeValueAsString(addBookModel);
 
         AddBookResponseModel responseAddBookModel =
                 given(getAuthRequestSpec(tokenGet))
@@ -51,5 +58,15 @@ public class BookStoreApiSteps {
             assertEquals(List.of(isbnModel), responseAddBookModel.getBooks());
         });
         return responseAddBookModel;
+    }
+
+    @DisplayName("Удаление книги")
+    public void deleteBook(String tokenGet, String userIDGet){
+        given(getAuthRequestSpec(tokenGet))
+                .body(jsonBody)
+                .when()
+                .delete(BOOKS_WITH_USER_ID + userIDGet)
+                .then()
+                .spec(responseSpec(204));
     }
 }

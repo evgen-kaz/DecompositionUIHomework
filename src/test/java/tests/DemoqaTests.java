@@ -55,65 +55,30 @@ public class DemoqaTests extends TestBase {
     @Test
     @Tag("Positive")
     @DisplayName("Удаление книги через API")
-    void successfulDeleteBookAPI() throws JsonProcessingException {
-        Map<String, String> passwordAndUserName = new HashMap<>();
-        passwordAndUserName.put("password", PASSWORD);
-        passwordAndUserName.put("userName", USER_NAME);
-
-        AuthorizationResponseModel responseAuthUser = step("Авторизация пользователя через API", () ->
-                given(requestSpec)
-                        .body(passwordAndUserName)
-                        .when()
-                        .post(LOGIN_END_POINT)
-                        .then()
-                        .spec(responseSpec(200))
-                        .extract().as(AuthorizationResponseModel.class));
-        step("Проверка, что пришел токен", () -> {
-            assertNotNull(responseAuthUser.getToken());
+    void successfulDeleteBookAPI() {
+        step("Авторизация пользователя через API", () -> {
+            accountApiSteps.login();
         });
 
-        RestAssured.defaultParser = Parser.JSON;
-        step("Удаление книг через API", () ->
-                given(getAuthRequestSpec(responseAuthUser.getToken()))
-                        .when()
-                        .delete(BOOKS_WITH_USER_ID + responseAuthUser.getUserId())
-                        .then()
-                        .spec(responseSpec(204)));
-
-
-        ObjectMapper mapper = new ObjectMapper(); // для преобразования Java-объекта в строку формата JSON
-
-        AddIsbnRequestModel isbnModel = new AddIsbnRequestModel(); //создали объект класса. задали Isbn книги
-        isbnModel.setIsbn(ISBN);
-
-        AddBookRequestModel addBookModel = new AddBookRequestModel(); //создали объект класса. задали UserId и положили в collectionOfIsbns - isbn книги конкретной
-        addBookModel.setUserId("a11b9d00-d415-4099-84bc-485592546bf9");
-        addBookModel.setCollectionOfIsbns(List.of(isbnModel));
-
-        String jsonBody = mapper.writeValueAsString(addBookModel); //преобразование объекта в JSON
-
-        AddBookResponseModel responseAddBookModel = step("Добавление книги через API", () ->
-                given(getAuthRequestSpec(responseAuthUser.getToken()))
-                        .body(jsonBody)
-                        .when()
-                        .post(BOOKS_END_POINT)
-                        .then()
-                        .spec(responseSpec(201))
-                        .extract().as(AddBookResponseModel.class));
-        step("Проверка данных ответа для списка книг", () -> {
-            assertEquals(List.of(isbnModel), responseAddBookModel.getBooks());
+        step("Удаление всех книг через API", () -> {
+            bookStoreApiSteps.deleteBooks(accountApiSteps.tokenGet, accountApiSteps.userIDGet);
         });
 
-        step("Удаление книги с ISBN {isbn} через API", () ->
-                given(getAuthRequestSpec(responseAuthUser.getToken()))
-                        .body(jsonBody)
-                        .when()
-                        .delete(BOOKS_WITH_USER_ID + responseAuthUser.getUserId())
-                        .then()
-                        .spec(responseSpec(204)));
+        step("Добавление книги через API", () -> {
+            bookStoreApiSteps.addBook(accountApiSteps.tokenGet);
+        });
 
-        profilePage.openProfilePageAndSetCookie(responseAuthUser.getUserId(), responseAuthUser.getExpires(), responseAuthUser.getToken());
+        step("Удаление книги через API", () -> {
+                bookStoreApiSteps.deleteBook(accountApiSteps.tokenGet, accountApiSteps.userIDGet);
+        });
+
+        step("Добавление куки и открытие страницы с профилем", () -> {
+        profilePage.openProfilePageAndSetCookie(accountApiSteps.tokenGet, accountApiSteps.expiresGet, accountApiSteps.userIDGet);
+        });
+
+        step("Проверка пустого списка после удаления книги в UI", () -> {
         profilePage.checkDeleteBook();
+        });
     }
 
     @Test
@@ -155,7 +120,7 @@ public class DemoqaTests extends TestBase {
             assertEquals(List.of(isbnModel), response.getBooks());
         });
 
-        step("Удаление книги с ISBN {isbn} через API", () ->
+        step("Удаление книги с ISBN через API", () ->
                 given(getAuthRequestSpec(token))
                         .body(jsonBody)
                         .when()
