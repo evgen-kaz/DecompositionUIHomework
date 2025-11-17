@@ -9,8 +9,6 @@ import models.AddBookRequestModel;
 import models.AddBookResponseModel;
 import models.AddIsbnRequestModel;
 import org.junit.jupiter.api.DisplayName;
-import pages.ProfilePage;
-
 import java.util.List;
 
 import static api.EndPoint.BOOKS_END_POINT;
@@ -23,8 +21,8 @@ import static specs.BaseSpecs.getAuthRequestSpec;
 import static utils.DataTest.ISBN;
 
 public class BookStoreApiSteps {
-    public static String token = LoginExtensions.token;
-    public static String userId = LoginExtensions.userID;
+    String token = LoginExtensions.token;
+    static String userId = LoginExtensions.userID;
     public String jsonBody;
 
     @DisplayName("Удаление всех книг через API")

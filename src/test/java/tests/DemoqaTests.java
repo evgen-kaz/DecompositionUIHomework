@@ -98,4 +98,5 @@ public class DemoqaTests extends TestBase {
             bookStoreApiSteps.AutWithAnnotationAndDeleteBook();
         });
     }
+
 }

@@ -4,6 +4,7 @@ import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import models.AuthorizationResponseModel;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Cookie;
@@ -24,7 +25,7 @@ public class LoginExtensions implements BeforeEachCallback {
     public static String expires;
 
     @Override
-    @Step("Авторизоваться в Book Store")
+    @DisplayName("Авторизоваться в Book Store")
     public void beforeEach(ExtensionContext context) {
         RestAssured.defaultParser = Parser.JSON;
 
