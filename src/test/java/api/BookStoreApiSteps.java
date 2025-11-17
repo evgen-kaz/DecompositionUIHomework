@@ -21,9 +21,9 @@ import static specs.BaseSpecs.getAuthRequestSpec;
 import static utils.DataTest.ISBN;
 
 public class BookStoreApiSteps {
-    String token = LoginExtensions.token;
-    static String userId = LoginExtensions.userID;
-    public String jsonBody;
+    /*String token = LoginExtensions.token;
+     String userId = LoginExtensions.userID;*/
+    String jsonBody;
 
     @DisplayName("Удаление всех книг через API")
     public void deleteBooks(String tokenGet, String userIDGet) {
@@ -72,6 +72,8 @@ public class BookStoreApiSteps {
 
     @DisplayName("Авторизация с помощью '@WithLogin' и удаление всех книг через API")
     public void AutWithAnnotationAndDeleteBooks() {
+        String token = LoginExtensions.token;
+        String userId = LoginExtensions.userID;
         RestAssured.defaultParser = Parser.JSON;
         given(getAuthRequestSpec(token))
                 .when()
@@ -82,6 +84,7 @@ public class BookStoreApiSteps {
 
     @DisplayName("Добавление книги через API с данными авторизации '@WithLogin'")
     public void AutWithAnnotationAndAddBook() {
+        String token = LoginExtensions.token;
         ObjectMapper mapper = new ObjectMapper();
         AddIsbnRequestModel isbnModel = new AddIsbnRequestModel();
         isbnModel.setIsbn(ISBN);
@@ -105,9 +108,19 @@ public class BookStoreApiSteps {
     }
 
     @DisplayName("Удаление книги через API с данными авторизации '@WithLogin'")
-    public void  AutWithAnnotationAndDeleteBook(){
+    public void  AutWithAnnotationAndDeleteBook() throws JsonProcessingException {
+        String token = LoginExtensions.token;
+        String userId = LoginExtensions.userID;
+        ObjectMapper mapper = new ObjectMapper();
+        AddIsbnRequestModel isbnModel = new AddIsbnRequestModel();
+        isbnModel.setIsbn(ISBN);
+
+        AddBookRequestModel addBookModel = new AddBookRequestModel();
+        addBookModel.setUserId("a11b9d00-d415-4099-84bc-485592546bf9");
+        addBookModel.setCollectionOfIsbns(List.of(isbnModel));
+        String jsonBody1 = mapper.writeValueAsString(addBookModel);
         given(getAuthRequestSpec(token))
-                .body(jsonBody)
+                .body(jsonBody1)
                 .when()
                 .delete(BOOKS_WITH_USER_ID + userId)
                 .then()
