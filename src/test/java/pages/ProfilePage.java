@@ -2,6 +2,7 @@ package pages;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import org.junit.jupiter.api.DisplayName;
 import org.openqa.selenium.Cookie;
 
 import static com.codeborne.selenide.Condition.text;
@@ -19,17 +20,17 @@ public class ProfilePage {
 
     String expectedUserName = "Anna@Test";
 
-    @Step("Добавление куки и открытие страницы с профилем")
-    public void openProfilePageAndSetCookie(String userId, String expires, String token) {
+    @DisplayName("Добавление куки и открытие страницы с профилем")
+    public void openProfilePageAndSetCookie(String tokenGet, String userIDGet, String expiresGet) {
         open("https://demoqa.com/images/Toolsqa.jpg");
-        getWebDriver().manage().addCookie(new Cookie("userID", userId));
-        getWebDriver().manage().addCookie(new Cookie("expires", expires));
-        getWebDriver().manage().addCookie(new Cookie("token", token));
+        getWebDriver().manage().addCookie(new Cookie("userID", userIDGet)); //установили userID
+        getWebDriver().manage().addCookie(new Cookie("expires", expiresGet)); //установили когда токен истекает
+        getWebDriver().manage().addCookie(new Cookie("token", tokenGet)); //установили токен
         open("/profile");
         userNameLocator.shouldHave(text(expectedUserName));
     }
 
-    @Step("Проверка пустого списка после удаления книги в UI")
+    @DisplayName("Проверка пустого списка после удаления книги в UI")
     public void checkDeleteBook() {
         buttonDeleteBooksLocator.click();
         windowConfirmationDeleteLocator.click();

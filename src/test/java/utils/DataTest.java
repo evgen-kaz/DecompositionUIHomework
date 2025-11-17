@@ -1,6 +1,11 @@
 package utils;
 
+import io.qameta.allure.Step;
+import org.openqa.selenium.Cookie;
+import io.restassured.response.Response;
 import models.AuthorizationRequestModel;
+
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class DataTest {
     public static final String USER_NAME = System.getProperty("userName", "Anna@Test");

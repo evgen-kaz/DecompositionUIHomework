@@ -1,5 +1,7 @@
 package tests;
 
+import api.AccountApiSteps;
+import api.BookStoreApiSteps;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import extensions.LoginExtensions;
@@ -26,58 +28,28 @@ import static utils.DataTest.*;
 
 public class DemoqaTests extends TestBase {
     ProfilePage profilePage = new ProfilePage();
+    AccountApiSteps accountApiSteps = new AccountApiSteps();
+    BookStoreApiSteps bookStoreApiSteps = new BookStoreApiSteps();
 
     @Test
     @Tag("Positive")
     @DisplayName("Удаление книги через UI")
-    void successfulDeleteBookUI() throws JsonProcessingException {
-        Map<String, String> passwordAndUserName = new HashMap<>();
-        passwordAndUserName.put("password", PASSWORD);
-        passwordAndUserName.put("userName", USER_NAME);
-
-        AuthorizationResponseModel responseAuthUser = step("Авторизация пользователя через API", () ->
-                given(requestSpec)
-                        .body(passwordAndUserName)
-                        .when()
-                        .post(LOGIN_END_POINT)
-                        .then()
-                        .spec(responseSpec(200))
-                        .extract().as(AuthorizationResponseModel.class));
-        step("Проверка наличия токена в ответе", () -> {
-            assertNotNull(responseAuthUser.getToken());
+    void successfulDeleteBookUI(){
+        step("Авторизация пользователя через API", () -> {
+            accountApiSteps.login();
         });
-
-        RestAssured.defaultParser = Parser.JSON;
-        step("Удаление через API всех книг", () ->
-                given(getAuthRequestSpec(responseAuthUser.getToken()))
-                        .when()
-                        .delete(BOOKS_WITH_USER_ID + responseAuthUser.getUserId())
-                        .then()
-                        .spec(responseSpec(204)));
-
-        ObjectMapper mapper = new ObjectMapper();
-        AddIsbnRequestModel isbnModel = new AddIsbnRequestModel();
-        isbnModel.setIsbn(ISBN);
-
-        AddBookRequestModel addBookModel = new AddBookRequestModel();
-        addBookModel.setUserId("a11b9d00-d415-4099-84bc-485592546bf9");
-        addBookModel.setCollectionOfIsbns(List.of(isbnModel));
-        String jsonBody = mapper.writeValueAsString(addBookModel);
-
-        AddBookResponseModel responseAddBookModel = step("Добавление книги через API", () ->
-                given(getAuthRequestSpec(responseAuthUser.getToken()))
-                        .body(jsonBody)
-                        .when()
-                        .post(BOOKS_END_POINT)
-                        .then()
-                        .spec(responseSpec(201))
-                        .extract().as(AddBookResponseModel.class));
-        step("Проверка добавления книги Ччерез API", () -> {
-            assertEquals(List.of(isbnModel), responseAddBookModel.getBooks());
+        step("Удаление всех книг через API", () -> {
+            bookStoreApiSteps.deleteBooks(accountApiSteps.tokenGet, accountApiSteps.userIDGet);
         });
-
-        profilePage.openProfilePageAndSetCookie(responseAuthUser.getUserId(), responseAuthUser.getExpires(), responseAuthUser.getToken());
-        profilePage.checkDeleteBook();
+        step("Добавление книги через API", () -> {
+            bookStoreApiSteps.addBook(accountApiSteps.tokenGet);
+        });
+        step("Добавление куки и открытие страницы с профилем", () -> {
+            profilePage.openProfilePageAndSetCookie(accountApiSteps.tokenGet, accountApiSteps.expiresGet, accountApiSteps.userIDGet);
+        });
+        step("Проверка пустого списка после удаления книги в UI", () -> {
+            profilePage.checkDeleteBook();
+        });
     }
 
     @Test
@@ -109,16 +81,16 @@ public class DemoqaTests extends TestBase {
                         .spec(responseSpec(204)));
 
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper(); // для преобразования Java-объекта в строку формата JSON
 
-        AddIsbnRequestModel isbnModel = new AddIsbnRequestModel();
+        AddIsbnRequestModel isbnModel = new AddIsbnRequestModel(); //создали объект класса. задали Isbn книги
         isbnModel.setIsbn(ISBN);
 
-        AddBookRequestModel addBookModel = new AddBookRequestModel();
+        AddBookRequestModel addBookModel = new AddBookRequestModel(); //создали объект класса. задали UserId и положили в collectionOfIsbns - isbn книги конкретной
         addBookModel.setUserId("a11b9d00-d415-4099-84bc-485592546bf9");
         addBookModel.setCollectionOfIsbns(List.of(isbnModel));
 
-        String jsonBody = mapper.writeValueAsString(addBookModel);
+        String jsonBody = mapper.writeValueAsString(addBookModel); //преобразование объекта в JSON
 
         AddBookResponseModel responseAddBookModel = step("Добавление книги через API", () ->
                 given(getAuthRequestSpec(responseAuthUser.getToken()))
@@ -160,7 +132,7 @@ public class DemoqaTests extends TestBase {
                         .then()
                         .spec(responseSpec(204)));
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper(); // для преобразования Java-объекта в строку формата JSON
 
         AddIsbnRequestModel isbnModel = new AddIsbnRequestModel();
         isbnModel.setIsbn(ISBN);

@@ -21,6 +21,7 @@ public class LoginExtensions implements BeforeEachCallback {
     private static final String TOKEN = "token";
     public static String token;
     public static String userID;
+    public static String expires;
 
     @Override
     @Step("Авторизоваться в Book Store")
@@ -36,11 +37,12 @@ public class LoginExtensions implements BeforeEachCallback {
                 .extract().as(AuthorizationResponseModel.class);
 
         open("https://demoqa.com/images/Toolsqa.jpg");
-        getWebDriver().manage().addCookie(new Cookie(USER_ID, authorizationResponseModel.getUserId()));
-        getWebDriver().manage().addCookie(new Cookie(EXPIRES, authorizationResponseModel.getExpires()));
-        getWebDriver().manage().addCookie(new Cookie(TOKEN, authorizationResponseModel.getToken()));
+        getWebDriver().manage().addCookie(new Cookie(USER_ID, authorizationResponseModel.getUserId())); //установили userID
+        getWebDriver().manage().addCookie(new Cookie(EXPIRES, authorizationResponseModel.getExpires())); //установили когда токен истекает
+        getWebDriver().manage().addCookie(new Cookie(TOKEN, authorizationResponseModel.getToken())); //установили токен
 
         token = authorizationResponseModel.getToken();
         userID = authorizationResponseModel.getUserId();
+        expires = authorizationResponseModel.getExpires();
     }
 }

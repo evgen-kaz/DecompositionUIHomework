@@ -25,6 +25,8 @@ public class TestBase {
         Configuration.browser = System.getProperty("browser", "chrome");
         Configuration.browserVersion = System.getProperty("browserVersion");
         Configuration.browserSize = System.getProperty("browserSize", "1920x1080");
+        Configuration.timeout = 50000;
+        Configuration.pageLoadTimeout = 60000;
         Configuration.remote = System.getProperty("remoteUrl");
         Configuration.pageLoadStrategy = "eager";
         DesiredCapabilities capabilities = new DesiredCapabilities();
