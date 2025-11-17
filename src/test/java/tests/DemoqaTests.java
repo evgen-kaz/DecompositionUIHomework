@@ -2,29 +2,13 @@ package tests;
 
 import api.AccountApiSteps;
 import api.BookStoreApiSteps;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import extensions.LoginExtensions;
 import extensions.WithLogin;
-import io.restassured.RestAssured;
-import io.restassured.parsing.Parser;
-import models.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.ProfilePage;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static api.EndPoint.*;
 import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static specs.BaseSpecs.*;
-import static utils.DataTest.*;
 
 public class DemoqaTests extends TestBase {
     ProfilePage profilePage = new ProfilePage();
@@ -34,7 +18,7 @@ public class DemoqaTests extends TestBase {
     @Test
     @Tag("Positive")
     @DisplayName("Удаление книги через UI")
-    void successfulDeleteBookUI(){
+    void successfulDeleteBookUI() {
         step("Авторизация пользователя через API", () -> {
             accountApiSteps.login();
         });
@@ -69,15 +53,15 @@ public class DemoqaTests extends TestBase {
         });
 
         step("Удаление книги через API", () -> {
-                bookStoreApiSteps.deleteBook(accountApiSteps.tokenGet, accountApiSteps.userIDGet);
+            bookStoreApiSteps.deleteBook(accountApiSteps.tokenGet, accountApiSteps.userIDGet);
         });
 
         step("Добавление куки и открытие страницы с профилем", () -> {
-        profilePage.openProfilePageAndSetCookie(accountApiSteps.tokenGet, accountApiSteps.expiresGet, accountApiSteps.userIDGet);
+            profilePage.openProfilePageAndSetCookie(accountApiSteps.tokenGet, accountApiSteps.expiresGet, accountApiSteps.userIDGet);
         });
 
         step("Проверка пустого списка после удаления книги в UI", () -> {
-        profilePage.checkDeleteBook();
+            profilePage.checkDeleteBook();
         });
     }
 
@@ -94,9 +78,8 @@ public class DemoqaTests extends TestBase {
             bookStoreApiSteps.AutWithAnnotationAndAddBook();
         });
 
-        step("Удаление книги через API", () ->{
+        step("Удаление книги через API", () -> {
             bookStoreApiSteps.AutWithAnnotationAndDeleteBook();
         });
     }
-
 }
