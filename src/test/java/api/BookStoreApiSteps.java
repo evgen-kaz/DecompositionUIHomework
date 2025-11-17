@@ -21,9 +21,18 @@ import static specs.BaseSpecs.getAuthRequestSpec;
 import static utils.DataTest.ISBN;
 
 public class BookStoreApiSteps {
-    /*String token = LoginExtensions.token;
-     String userId = LoginExtensions.userID;*/
-    String jsonBody;
+    public static String createAddBookJson(String userId,String isbn) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        AddIsbnRequestModel isbnModel = new AddIsbnRequestModel();
+        isbnModel.setIsbn(isbn);
+
+        AddBookRequestModel addBookModel = new AddBookRequestModel();
+        addBookModel.setUserId(userId);
+        addBookModel.setCollectionOfIsbns(List.of(isbnModel));
+
+        return mapper.writeValueAsString(addBookModel);
+    }
 
     @DisplayName("Удаление всех книг через API")
     public void deleteBooks(String tokenGet, String userIDGet) {
@@ -44,7 +53,7 @@ public class BookStoreApiSteps {
         AddBookRequestModel addBookModel = new AddBookRequestModel();
         addBookModel.setUserId("a11b9d00-d415-4099-84bc-485592546bf9");
         addBookModel.setCollectionOfIsbns(List.of(isbnModel));
-        jsonBody = mapper.writeValueAsString(addBookModel);
+        String jsonBody = mapper.writeValueAsString(addBookModel);
 
         AddBookResponseModel responseAddBookModel =
                 given(getAuthRequestSpec(tokenGet))
@@ -61,7 +70,9 @@ public class BookStoreApiSteps {
     }
 
     @DisplayName("Удаление книги через API")
-    public void deleteBook(String tokenGet, String userIDGet){
+    public void deleteBook(String tokenGet, String userIDGet) throws JsonProcessingException{
+        String jsonBody = createAddBookJson("a11b9d00-d415-4099-84bc-485592546bf9", ISBN);
+
         given(getAuthRequestSpec(tokenGet))
                 .body(jsonBody)
                 .when()
@@ -111,14 +122,8 @@ public class BookStoreApiSteps {
     public void  AutWithAnnotationAndDeleteBook() throws JsonProcessingException {
         String token = LoginExtensions.token;
         String userId = LoginExtensions.userID;
-        ObjectMapper mapper = new ObjectMapper();
-        AddIsbnRequestModel isbnModel = new AddIsbnRequestModel();
-        isbnModel.setIsbn(ISBN);
+        String jsonBody = createAddBookJson("a11b9d00-d415-4099-84bc-485592546bf9", ISBN);
 
-        AddBookRequestModel addBookModel = new AddBookRequestModel();
-        addBookModel.setUserId("a11b9d00-d415-4099-84bc-485592546bf9");
-        addBookModel.setCollectionOfIsbns(List.of(isbnModel));
-        String jsonBody = mapper.writeValueAsString(addBookModel);
         given(getAuthRequestSpec(token))
                 .body(jsonBody)
                 .when()
