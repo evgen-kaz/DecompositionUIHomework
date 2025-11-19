@@ -6,7 +6,6 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static utils.DataTest.AUTH_DATA;
 
-import static api.EndPoint.LOGIN_END_POINT;
 import static io.restassured.RestAssured.given;
 import static specs.BaseSpecs.requestSpec;
 import static specs.BaseSpecs.responseSpec;
@@ -21,7 +20,7 @@ public class AccountApiSteps {
                 given(requestSpec)
                         .body(AUTH_DATA)
                         .when()
-                        .post(LOGIN_END_POINT)
+                        .post("/Account/v1/Login")
 
                         .then()
                         .spec(responseSpec(200))
