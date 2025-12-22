@@ -3,6 +3,8 @@ package tests;
 import api.AccountApiSteps;
 import api.BookStoreApiSteps;
 import extensions.WithLogin;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -11,6 +13,8 @@ import pages.ProfilePage;
 
 import static io.qameta.allure.Allure.step;
 
+@Owner("Evgenia Zhakova")
+@Feature("Проверка функциональности API для управления товарами")
 public class DemoqaTests extends TestBase {
     ProfilePage profilePage = new ProfilePage();
     AccountApiSteps accountApiSteps = new AccountApiSteps();

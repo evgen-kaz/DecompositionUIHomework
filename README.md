@@ -78,6 +78,13 @@ clean test
 * `${SELENOID_URL}` - адрес удаленного сервера Selenoid.
 
 ---
+## <img src='media/icons/Allure_TO.svg' width="50"/> Интеграция с Allure TestOps
+
+
+
+
+
+---
 <a id="allure"></a>
 ## <img src='media/icons/Allure_Report.svg' width="50"/>Allure отчет
 [Allure отчет](https://jenkins.autotests.cloud/job/DecompositionUIHomework/32/allure)
