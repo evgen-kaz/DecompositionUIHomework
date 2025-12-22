@@ -71,7 +71,7 @@ clean test
 
 [Сборка в Jenkins](https://jenkins.autotests.cloud/job/DecompositionUIHomework)
 
-<img src='media/icons/СкринСборкиJenkins2.jpg'/>
+<img src='media/icons/СкринСборкиJenkins3.jpg'/>
 
 ### Параметры сборки в Jenkins:
 
@@ -79,23 +79,26 @@ clean test
 * `${SELENOID_URL}` - адрес удаленного сервера Selenoid.
 
 ---
+<a id="allure_TestOps"></a>
 ## <img src='media/icons/Allure_TO.svg' width="50"/> Интеграция с Allure TestOps
-[Allure отчет](https://jenkins.autotests.cloud/job/DecompositionUIHomework/32/allure)
+[Ссылка на Allure TestOps](https://allure.autotests.cloud/launch/50493)
 
+* ### Главный экран запуска
+<img src='media/icons/Результат запуска.jpg'/>
 
-
-
+* ### Страница с проведенными тестами
+<img src='media/icons/Страница теста.jpg'/>
 
 ---
 <a id="allure"></a>
 ## <img src='media/icons/Allure_Report.svg' width="50"/>Allure отчет
-[Allure отчет](https://jenkins.autotests.cloud/job/DecompositionUIHomework/32/allure)
+[Allure отчет](https://jenkins.autotests.cloud/job/DecompositionUIHomework/38/allure)
 
 * ### Главный экран отчета
-<img src='media/icons/Главный экран отчёта.jpg'/>
+<img src='media/icons/Главный экран отчёта2.jpg'/>
 
 * ### Страница с проведенными тестами
-<img src='media/icons/Детально.jpg'/>
+<img src='media/icons/Страница теста2.jpg'/>
 
 Содержание Allure-отчета:
 * Шаги теста
@@ -107,6 +110,6 @@ clean test
 <a id="telegram"></a>
 ## <img src='media/icons/telegram.svg' width="50"/> Уведомление в Telegram при помощи бота
 
-<img src='media/icons/СкринОтчетаВТегреграм2.jpg'/>
+<img src='media/icons/tg.jpg'/>
 
 ---
