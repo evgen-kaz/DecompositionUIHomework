@@ -18,6 +18,7 @@ public class DemoqaTests extends TestBase {
     @Test
     @Tag("Positive")
     @DisplayName("Удаление книги через UI")
+    @Disabled("Проблемы на стороне сайта")
     void successfulDeleteBookUI() {
         step("Авторизация пользователя через API", () -> {
             accountApiSteps.login();
@@ -39,6 +40,7 @@ public class DemoqaTests extends TestBase {
     @Test
     @Tag("Positive")
     @DisplayName("Удаление книги через API")
+    @Disabled("Проблемы на стороне сайта")
     void successfulDeleteBookAPI() {
         step("Авторизация пользователя через API", () -> {
             accountApiSteps.login();
