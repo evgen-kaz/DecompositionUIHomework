@@ -9,7 +9,7 @@
 * <a href="#cases">Реализованные проверки</a>
 * <a href="#console">Запуск из терминала</a>
 * <a href="#jenkins">Сборка в Jenkins</a>
-* <a href="#video">Интеграция с Allure TestOps</a>
+* <a href="#allure_TestOps">Интеграция с Allure TestOps</a>
 * <a href="#allure">Allure отчет</a>
 * <a href="#telegram">Уведомление в Telegram при помощи бота</a>
 ---
@@ -21,7 +21,7 @@
 <a href="https://www.java.com/"><img src='media/icons/java.svg' width="50"/></a> 
 <a href="https://junit.org/junit5/"><img src='media/icons/junit.svg' width="50"/></a>
 <a href="https://rest-assured.io/"><img src='media/icons/rest_assured.png' width="50"/></a>
-<a href="https://rest-assured.io/"><img src='media/icons/Allure_TO.svg' width="50"/></a>
+<a href="https://qameta.io/"><img src='media/icons/Allure_TO.svg' width="50"/></a>
 <a href="https://allurereport.org/"><img src='media/icons/Allure_Report.svg' width="50"/></a>
 <a href="https://selenide.org/"><img src='media/icons/Selenide.svg' width="50"/></a> 
 <a href="https://aerokube.com/selenoid/"><img src='media/icons/Selenoid.svg' width="50"/></a> 
