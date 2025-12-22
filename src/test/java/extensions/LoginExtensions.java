@@ -1,6 +1,5 @@
 package extensions;
 
-import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import models.AuthorizationResponseModel;
