@@ -21,6 +21,7 @@
 <a href="https://www.java.com/"><img src='media/icons/java.svg' width="50"/></a> 
 <a href="https://junit.org/junit5/"><img src='media/icons/junit.svg' width="50"/></a>
 <a href="https://rest-assured.io/"><img src='media/icons/rest_assured.png' width="50"/></a>
+<a href="https://rest-assured.io/"><img src='media/icons/Allure_TO.svg' width="50"/></a>
 <a href="https://allurereport.org/"><img src='media/icons/Allure_Report.svg' width="50"/></a>
 <a href="https://selenide.org/"><img src='media/icons/Selenide.svg' width="50"/></a> 
 <a href="https://aerokube.com/selenoid/"><img src='media/icons/Selenoid.svg' width="50"/></a> 
@@ -79,6 +80,7 @@ clean test
 
 ---
 ## <img src='media/icons/Allure_TO.svg' width="50"/> Интеграция с Allure TestOps
+[Allure отчет](https://jenkins.autotests.cloud/job/DecompositionUIHomework/32/allure)
 
 
 

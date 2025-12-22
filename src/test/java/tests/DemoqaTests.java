@@ -5,6 +5,7 @@ import api.BookStoreApiSteps;
 import extensions.WithLogin;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -21,8 +22,9 @@ public class DemoqaTests extends TestBase {
     BookStoreApiSteps bookStoreApiSteps = new BookStoreApiSteps();
 
     @Test
-    @Tag("Positive")
     @DisplayName("Удаление книги через UI")
+    @Story("Удаление книги")
+    @Tag("Positive")
     @Disabled("Проблемы на стороне сайта")
     void successfulDeleteBookUI() {
         step("Авторизация пользователя через API", () -> {
@@ -43,8 +45,9 @@ public class DemoqaTests extends TestBase {
     }
 
     @Test
-    @Tag("Positive")
     @DisplayName("Удаление книги через API")
+    @Story("Удаление книги")
+    @Tag("Positive")
     @Disabled("Проблемы на стороне сайта")
     void successfulDeleteBookAPI() {
         step("Авторизация пользователя через API", () -> {
@@ -74,8 +77,9 @@ public class DemoqaTests extends TestBase {
 
     @Test
     @WithLogin
-    @Tag("Positive")
     @DisplayName("Авторизация с помощью аннотации '@WithLogin' + удаление книги через API")
+    @Story("Удаление книги")
+    @Tag("Positive")
     void successfulAuthorizationAnnotationAndDeleteBookAPI() {
         step("Удаление всех книг через API", () -> {
             bookStoreApiSteps.AutWithAnnotationAndDeleteBooks();
