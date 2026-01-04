@@ -23,11 +23,10 @@ public class ProfilePage {
     @DisplayName("Добавление куки и открытие страницы с профилем")
     public void openProfilePageAndSetCookie(String tokenGet, String userIDGet, String expiresGet) {
         open("https://demoqa.com/images/Toolsqa.jpg");
-        getWebDriver().manage().addCookie(new Cookie("userID", userIDGet)); 
-        getWebDriver().manage().addCookie(new Cookie("expires", expiresGet)); 
-        getWebDriver().manage().addCookie(new Cookie("token", tokenGet));
+        getWebDriver().manage().addCookie(new Cookie("userID", userIDGet)); //установили userID
+        getWebDriver().manage().addCookie(new Cookie("expires", expiresGet)); //установили когда токен истекает
+        getWebDriver().manage().addCookie(new Cookie("token", tokenGet)); //установили токен
         open("/profile");
-        userNameLocator.shouldHave(visible);
         userNameLocator.shouldHave(text(expectedUserName));
     }
 

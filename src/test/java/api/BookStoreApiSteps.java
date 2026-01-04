@@ -8,15 +8,18 @@ import io.restassured.parsing.Parser;
 import models.AddBookRequestModel;
 import models.AddBookResponseModel;
 import models.AddIsbnRequestModel;
+import models.DeleteBookRequestModel;
 import org.junit.jupiter.api.DisplayName;
 
 import java.util.List;
+import java.util.UUID;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static specs.BaseSpecs.*;
 import static specs.BaseSpecs.getAuthRequestSpec;
+import static utils.DataTest.GENERATE_ISBN;
 import static utils.DataTest.ISBN;
 
 public class BookStoreApiSteps {
@@ -129,5 +132,33 @@ public class BookStoreApiSteps {
                 .delete("/BookStore/v1/Books?UserId=" + userId)
                 .then()
                 .spec(responseSpec(204));
+    }
+
+    @DisplayName("Неуспешное удаление книги пользователем с просроченным токеном через API")
+    public void unsuccessfulDeleteBook(String tokenGet, String userIDGet) throws JsonProcessingException {
+        String jsonBody = createAddBookJson("a11b9d00-d415-4099-84bc-485592546bf9", ISBN);
+
+        given(getAuthRequestSpec(tokenGet))
+                .body(jsonBody)
+                .when()
+                .delete("/BookStore/v1/Books?UserId=" + userIDGet)
+                .then()
+                .spec(responseSpec(401));
+    }
+
+    @DisplayName("Неуспешное удаление несуществующей книги")
+    public void unsuccessfulDeleteNonExistentBook(String tokenGet, String userIDGet) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        DeleteBookRequestModel deleteBookRequestModel = new DeleteBookRequestModel();
+        deleteBookRequestModel.setIsbn(GENERATE_ISBN);
+        deleteBookRequestModel.setUserId(userIDGet);
+        String jsonBody = mapper.writeValueAsString(deleteBookRequestModel);
+
+        given(getAuthRequestSpec(tokenGet))
+                .body(jsonBody)
+                .when()
+                .delete("/BookStore/v1/Book")
+                .then()
+                .spec(responseSpec(404));
     }
 }

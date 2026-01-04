@@ -22,8 +22,9 @@ public class DemoqaTests extends TestBase {
     BookStoreApiSteps bookStoreApiSteps = new BookStoreApiSteps();
 
     @Test
-    @DisplayName("Удаление книги через UI")
+    @DisplayName("Успешное удаление книги")
     @Story("Удаление книги")
+    @Tag("API")
     @Tag("Positive")
     @Disabled("Проблемы на стороне сайта")
     void successfulDeleteBookUI() {
@@ -45,8 +46,9 @@ public class DemoqaTests extends TestBase {
     }
 
     @Test
-    @DisplayName("Удаление книги через API")
+    @DisplayName("Успешное удаление книги")
     @Story("Удаление книги")
+    @Tag("API")
     @Tag("Positive")
     @Disabled("Проблемы на стороне сайта")
     void successfulDeleteBookAPI() {
@@ -77,8 +79,9 @@ public class DemoqaTests extends TestBase {
 
     @Test
     @WithLogin
-    @DisplayName("Авторизация с помощью аннотации '@WithLogin' + удаление книги через API")
+    @DisplayName("Авторизация с помощью аннотации '@WithLogin' + удаление книги")
     @Story("Удаление книги")
+    @Tag("API")
     @Tag("Positive")
     void successfulAuthorizationAnnotationAndDeleteBookAPI() {
         step("Удаление всех книг через API", () -> {
@@ -93,4 +96,49 @@ public class DemoqaTests extends TestBase {
             bookStoreApiSteps.AutWithAnnotationAndDeleteBook();
         });
     }
+
+    @Test
+    @DisplayName("Неуспешное удаление пользователя по несуществущему UUID")
+    @Story("Удаление пользователя")
+    @Tag("API")
+    @Tag("Negative")
+    void unsuccessfulDeletionNonExistUser() {
+       step("Авторизация пользователя через API", () -> {
+            accountApiSteps.login();
+        });
+
+        step("Удаление пользователя через API по несуществующему UUID", () -> {
+            accountApiSteps.deleteNonExistentUser(accountApiSteps.tokenGet);
+        });
+    }
+
+    @Test
+    @DisplayName("Неуспешное удаление книги пользователем с просроченным токеном")
+    @Story("Удаление книги")
+    @Tag("API")
+    @Tag("Negative")
+    void unsuccessfulDeleteBookWithExpiredTokenAPI() {
+        step("Авторизация под пользователем с просроченным токеном через API", () -> {
+            accountApiSteps.loginUserWithExpiredToken();
+        });
+
+        step("Удаление книги через API", () -> {
+            bookStoreApiSteps.unsuccessfulDeleteBook(accountApiSteps.tokenGet, accountApiSteps.userIDGet);
+        });
+    }
+
+    @Test
+    @DisplayName("Неуспешное удаление несуществующей книги через API")
+    @Story("Удаление книги")
+    @Tag("Negative")
+    void unsuccessfulDeleteBookAPI() {
+        step("Авторизация пользователя через API", () -> {
+            accountApiSteps.login();
+        });
+
+        step("Удаление несуществующей книги через API", () -> {
+            bookStoreApiSteps.unsuccessfulDeleteNonExistentBook(accountApiSteps.tokenGet, accountApiSteps.userIDGet);
+        });
+    }
+
 }
