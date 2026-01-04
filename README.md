@@ -45,6 +45,7 @@
 ## Реализованные проверки
 - API:
   - POST /Account/v1/Login - авторизация пользователя
+  - POST /Account/v1/User?UserId={UserId} - удаление пользователя
   - DELETE /BookStore/v1/Books?UserId={UserId} - удаление всех книг
   - POST /BookStore/v1/Books - добавление книги
   - DELETE /BookStore/v1/Books?UserId={UserId} - удаление книги
