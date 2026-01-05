@@ -1,5 +1,6 @@
 package api;
 
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import models.AuthorizationResponseModel;
@@ -20,7 +21,13 @@ public class AccountApiSteps {
     public String userIDGet;
     public String expiresGet;
 
-    @DisplayName("Авторизация под пользователем корректными данными")
+    private void updateAuthFields(AuthorizationResponseModel responseAuthUser) {
+        this.tokenGet = responseAuthUser.getToken();
+        this.userIDGet = responseAuthUser.getUserId();
+        this.expiresGet = responseAuthUser.getExpires();
+    }
+
+    @Step("Отправка POST-запроса на авторизацию под пользователем с корректными данными")
     public AuthorizationResponseModel login() {
         RestAssured.defaultParser = Parser.JSON;
         AuthorizationResponseModel responseAuthUser =
@@ -28,7 +35,6 @@ public class AccountApiSteps {
                         .body(AUTH_DATA)
                         .when()
                         .post("/Account/v1/Login")
-
                         .then()
                         .spec(responseSpec(200))
                         .extract().as(AuthorizationResponseModel.class);
@@ -37,13 +43,11 @@ public class AccountApiSteps {
             assertNotNull(responseAuthUser.getUserId());
             assertNotNull(responseAuthUser.getExpires());
         });
-        tokenGet = responseAuthUser.getToken();
-        userIDGet = responseAuthUser.getUserId();
-        expiresGet = responseAuthUser.getExpires();
+        updateAuthFields(responseAuthUser);
         return responseAuthUser;
     }
 
-    @DisplayName("Авторизация под пользователем с просроченным токеном")
+    @Step("Отправка POST-запроса на авторизацию под пользователем с просроченным токеном")
     public AuthorizationResponseModel loginUserWithExpiredToken() {
         RestAssured.defaultParser = Parser.JSON;
         AuthorizationResponseModel responseAuthUser =
@@ -60,13 +64,11 @@ public class AccountApiSteps {
             assertNotNull(responseAuthUser.getUserId());
             assertNotNull(responseAuthUser.getExpires());
         });
-        tokenGet = responseAuthUser.getToken();
-        userIDGet = responseAuthUser.getUserId();
-        expiresGet = responseAuthUser.getExpires();
+        updateAuthFields(responseAuthUser);
         return responseAuthUser;
     }
 
-    @DisplayName("Неуспешное удаление пользователя по несуществущему UUID")
+    @Step("Отправка DELETE-запроса на удаление пользователя по несуществущему UUID")
     public void deleteNonExistentUser(String tokenGet) {
         UUID uuid = UUID.randomUUID();
         given(getAuthRequestSpec(tokenGet))
@@ -75,6 +77,4 @@ public class AccountApiSteps {
                 .then()
                 .spec(responseSpec(404));
     }
-
-
 }
